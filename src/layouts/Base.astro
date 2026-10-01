@@ -1,0 +1,133 @@
+---
+import "../styles/global.css";
+import type { Copy } from "../i18n/en";
+
+interface Props {
+  t: Copy;
+  path: string;
+}
+const { t, path } = Astro.props;
+const site = "https://openquanter.com";
+const other = t.nav.switchHref;
+---
+
+<!doctype html>
+<html lang={t.htmlLang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{t.meta.title}</title>
+    <meta name="description" content={t.meta.description} />
+    <link rel="canonical" href={`${site}${path}`} />
+    <link rel="alternate" hreflang="en" href={`${site}/`} />
+    <link rel="alternate" hreflang="zh-CN" href={`${site}/zh/`} />
+    <link rel="alternate" hreflang="x-default" href={`${site}/`} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={t.meta.title} />
+    <meta property="og:description" content={t.meta.description} />
+    <meta property="og:url" content={`${site}${path}`} />
+    <meta property="og:image" content={`${site}/og.png`} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta name="theme-color" content="#f5f2ea" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#12110e" media="(prefers-color-scheme: dark)" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href={t.lang === "zh"
+        ? "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&family=IBM+Plex+Sans:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Noto+Serif+SC:wght@500;600&display=swap"
+        : "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&family=IBM+Plex+Sans:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap"}
+    />
+    <script is:inline>
+      // Before paint, so a chosen theme never flashes the other one.
+      try {
+        const t = localStorage.getItem("theme");
+        if (t === "light" || t === "dark") document.documentElement.dataset.theme = t;
+      } catch {}
+    </script>
+  </head>
+  <body>
+    <header class="nav" id="nav">
+      <div class="wrap">
+        <a class="brand" href={t.lang === "zh" ? "/zh/" : "/"} aria-label="OpenQuanter">
+          <svg class="brand-mark" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <rect x="1.5" y="1.5" width="21" height="21" rx="3" stroke="currentColor" stroke-width="1.6"></rect>
+            <path d="M6 9h12M6 13.2h12M6 15.4h12" stroke="currentColor" stroke-width="1.4"></path>
+            <path d="M14.5 5.2l1.6 1.6 3-3" stroke="var(--red)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
+          </svg>
+          OpenQuanter
+        </a>
+        <nav class="nav-links" aria-label="Sections">
+          <a href="#why">{t.nav.why}</a>
+          <a href="#engine">{t.nav.engine}</a>
+          <a href="#deck">{t.nav.deck}</a>
+          <a href="#status">{t.nav.status}</a>
+          <a href="#start">{t.nav.start}</a>
+        </nav>
+        <div class="nav-tools">
+          <a class="chip" href={other} hreflang={t.lang === "zh" ? "en" : "zh-CN"} data-lang-switch>{t.nav.switchLang}</a>
+          <button class="chip" type="button" id="theme" aria-label={t.nav.theme} title={t.nav.theme}>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+              <circle cx="12" cy="12" r="4.2"></circle>
+              <path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"></path>
+            </svg>
+          </button>
+          <a class="chip" href="https://github.com/openquanter" aria-label="GitHub">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.42-2.7 5.39-5.26 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5Z"></path>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <slot />
+    </main>
+
+    <script is:inline>
+      (() => {
+        const root = document.documentElement;
+        const nav = document.getElementById("nav");
+        const onScroll = () => nav.classList.toggle("scrolled", window.scrollY > 8);
+        onScroll();
+        window.addEventListener("scroll", onScroll, { passive: true });
+
+        document.getElementById("theme").addEventListener("click", () => {
+          const dark =
+            root.dataset.theme === "dark" ||
+            (!root.dataset.theme && matchMedia("(prefers-color-scheme: dark)").matches);
+          root.dataset.theme = dark ? "light" : "dark";
+          try { localStorage.setItem("theme", root.dataset.theme); } catch {}
+        });
+
+        // Keep the reader's place when switching language.
+        document.querySelectorAll("[data-lang-switch]").forEach((a) =>
+          a.addEventListener("click", () => {
+            if (location.hash) a.href = a.getAttribute("href") + location.hash;
+          }),
+        );
+
+        document.querySelectorAll("[data-copy]").forEach((b) =>
+          b.addEventListener("click", async () => {
+            const text = b.getAttribute("data-copy");
+            try {
+              await navigator.clipboard.writeText(text);
+              const was = b.textContent;
+              b.textContent = b.getAttribute("data-copied");
+              setTimeout(() => (b.textContent = was), 1400);
+            } catch {}
+          }),
+        );
+
+        const io = "IntersectionObserver" in window
+          ? new IntersectionObserver((es) => es.forEach((e) => {
+              if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
+            }), { rootMargin: "0px 0px -8% 0px" })
+          : null;
+        document.querySelectorAll(".reveal").forEach((el) => (io ? io.observe(el) : el.classList.add("in")));
+      })();
+    </script>
+  </body>
+</html>

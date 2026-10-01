@@ -1,0 +1,394 @@
+---
+import type { Copy } from "../i18n/en";
+import { latest } from "../lib/latest";
+
+interface Props {
+  t: Copy;
+}
+const { t } = Astro.props;
+const [oq, deck] = await Promise.all([latest("openquanter/openquanter"), latest("openquanter/quanterdeck")]);
+const versions = [oq, deck];
+const shotDir = t.lang === "zh" ? "zh" : "en";
+const readme =
+  t.lang === "zh"
+    ? "https://github.com/openquanter/openquanter/blob/main/README.zh-CN.md#现状"
+    : "https://github.com/openquanter/openquanter#status";
+const quickstart =
+  t.lang === "zh"
+    ? "https://github.com/openquanter/openquanter/blob/main/docs/QUICKSTART.zh-CN.md"
+    : "https://github.com/openquanter/openquanter/blob/main/docs/QUICKSTART.md";
+const arrow = `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg>`;
+---
+
+<!-- Hero: the claim, and the receipt for it -->
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow">{t.hero.eyebrow}</div>
+      <h1>{t.hero.title}</h1>
+      <p class="motto">{t.hero.motto}</p>
+      <p class="lede">{t.hero.lede}</p>
+      <div class="cta">
+        <a class="btn btn-ink" href="#start">{t.hero.primary} <Fragment set:html={arrow} /></a>
+        <a class="btn btn-ghost" href="https://github.com/openquanter/openquanter">{t.hero.secondary}</a>
+      </div>
+      <div class="install">
+        <span><b>$</b> pip install openquanter</span>
+        <button class="copy" type="button" data-copy="pip install openquanter" data-copied={t.hero.copied}>{t.hero.copy}</button>
+      </div>
+    </div>
+
+    <figure class="ledger" aria-label={t.ledger.caption}>
+      <div class="ledger-head">
+        <span>{t.ledger.caption}</span>
+        <span>USDT</span>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th scope="col"></th>
+            <th scope="col">{t.ledger.colEnforced}</th>
+            <th scope="col">{t.ledger.colFree}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            t.ledger.rows.map(([label, a, b]) => (
+              <tr>
+                <td>{label}</td>
+                <td>{a}</td>
+                <td class={b.startsWith("−") ? "free neg" : "free"}>{b}</td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+      <div class="ledger-total">
+        <div>
+          <span>{t.ledger.overstated}</span>
+          <strong>{t.ledger.overstatedValue}</strong>
+        </div>
+        <div class="stamp" aria-hidden="true">{t.ledger.stamp}</div>
+      </div>
+      <figcaption class="ledger-note">
+        <code class="mono">$ {t.ledger.command}</code><br />
+        {t.ledger.note}
+      </figcaption>
+    </figure>
+  </div>
+
+  <div class="wrap">
+    <div class="proof reveal" style="margin-top: clamp(56px, 8vw, 96px)">
+      {
+        t.proof.map((p) => (
+          <div>
+            <div>
+              <span class="num">{p.value}</span>
+              <span class="unit">{p.unit}</span>
+            </div>
+            <p>{p.label}</p>
+            <small>{p.foot}</small>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<!-- Why: the six walls -->
+<section id="why">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="kicker">{t.wall.kicker}</span>
+      <h2 class="h2">{t.wall.title}</h2>
+      <p class="lede">{t.wall.lede}</p>
+    </div>
+    <div class="walls">
+      {
+        t.wall.items.map((w) => (
+          <article class="wall reveal">
+            <h3>{w.title}</h3>
+            <p>{w.body}</p>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<!-- Who it is for -->
+<section id="who">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="kicker">{t.audience.kicker}</span>
+      <h2 class="h2">{t.audience.title}</h2>
+    </div>
+    <div class="aud">
+      <div class="aud-for reveal">
+        <h3>{t.audience.forTitle}</h3>
+        {
+          t.audience.for.map((a) => (
+            <article>
+              <h4>{a.title}</h4>
+              <p>{a.body}</p>
+            </article>
+          ))
+        }
+      </div>
+      <aside class="aud-not reveal">
+        <h3>{t.audience.notTitle}</h3>
+        <ul>{t.audience.not.map((n) => <li>{n}</li>)}</ul>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- How it fits together -->
+<section id="stack">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="kicker">{t.stack.kicker}</span>
+      <h2 class="h2">{t.stack.title}</h2>
+      <p class="lede">{t.stack.lede}</p>
+    </div>
+    <div class="stack-grid">
+      <div class="diagram reveal">
+        <div class="layer layer-deck">
+          <div class="layer-title">{t.stack.layers.deck}</div>
+          <div class="pills">{t.stack.layers.deckItems.map((d) => <span>{d}</span>)}</div>
+        </div>
+        <div class="reads">reads ↑</div>
+        <div class="layer">
+          <div class="layer-title">{t.stack.layers.engine}</div>
+          <ol class="flow">
+            {
+              t.stack.layers.flow.map(([name, what]) => (
+                <li>
+                  <b>{name}</b>
+                  <span>{what}</span>
+                </li>
+              ))
+            }
+          </ol>
+          <div class="layer-foot">
+            <span>{t.stack.layers.lang}</span>
+          </div>
+        </div>
+        <div class="reads">↕</div>
+        <div class="layer">
+          <div class="layer-title">{t.stack.layers.venues}</div>
+          <div class="pills">
+            <span>Binance</span><span>OKX</span><span>Aster</span><span>Kraken</span><span>Hyperliquid</span><span>Backpack</span><span>Bitget</span><span>Deribit</span>
+          </div>
+          <div class="layer-foot"><span>{t.stack.layers.venuesNote}</span></div>
+        </div>
+      </div>
+
+      <div class="products">
+        {
+          t.stack.products.map((p, i) => (
+            <a class="product reveal" href={p.link}>
+              <div class="product-top">
+                <h3>{p.name}</h3>
+                <span class="role">{p.role}</span>
+              </div>
+              <p>{p.body}</p>
+              <div class="facts">
+                <span class="ver">
+                  {t.stack.latest} v{versions[i]}
+                </span>
+                {p.facts.map((f) => <span>{f}</span>)}
+              </div>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Engine features -->
+<section id="engine">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="kicker">{t.features.kicker}</span>
+      <h2 class="h2">{t.features.title}</h2>
+    </div>
+    <div class="features">
+      {
+        t.features.items.map((f, i) => (
+          <article class="feature reveal">
+            <span class="feature-idx">{String(i + 1).padStart(2, "0")}</span>
+            <h3>{f.title}</h3>
+            <p>{f.body}</p>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<!-- Quanterdeck -->
+<section id="deck" class="deck-section">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="kicker">{t.deck.kicker}</span>
+      <h2 class="h2">{t.deck.title}</h2>
+      <p class="lede">{t.deck.lede}</p>
+    </div>
+
+    <div class="shots reveal" data-shots>
+      <div class="shot-main">
+        <div class="shot-bar"><i></i><i></i><i></i><span data-shot-url>quanterdeck · /</span></div>
+        <img
+          data-shot-img
+          src={`/shots/${shotDir}/${t.deck.shots[0][0]}.png`}
+          alt={t.deck.shots[0][1]}
+          width="1440"
+          height="900"
+          loading="eager"
+          decoding="async"
+        />
+      </div>
+      <div class="shot-tabs" role="tablist">
+        {
+          t.deck.shots.map(([key, caption], i) => (
+            <button
+              type="button"
+              role="tab"
+              aria-selected={i === 0 ? "true" : "false"}
+              data-src={`/shots/${shotDir}/${key}.png`}
+              data-caption={caption}
+              data-url={`quanterdeck · /${key === "overview" ? "" : key.replace("-moment", "")}`}
+            >
+              {caption.split(/ — |——/)[0]}
+            </button>
+          ))
+        }
+      </div>
+      <p class="shot-caption" data-shot-caption>{t.deck.shots[0][1]}</p>
+    </div>
+
+    <div class="deck-rules">
+      <div class="reveal">
+        <h3>{t.deck.rulesTitle}</h3>
+        {
+          t.deck.rules.map(([rule, why]) => (
+            <div class="rule-item">
+              <b>{rule}</b>
+              <span>{why}</span>
+            </div>
+          ))
+        }
+      </div>
+      <div class="reveal">
+        <h3>{t.deck.securityTitle}</h3>
+        <ul class="sec-list">{t.deck.security.map((s) => <li>{s}</li>)}</ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Status -->
+<section id="status">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="kicker">{t.status.kicker}</span>
+      <h2 class="h2">{t.status.title}</h2>
+      <p class="lede">{t.status.lede}</p>
+    </div>
+    <div class="status-grid">
+      <div class="status-col reveal">
+        <h3><i></i>{t.status.builtTitle}</h3>
+        <ul>{t.status.built.map((b) => <li>{b}</li>)}</ul>
+      </div>
+      <div class="status-col not reveal">
+        <h3><i></i>{t.status.notTitle}</h3>
+        <ul>{t.status.not.map((b) => <li>{b}</li>)}</ul>
+      </div>
+    </div>
+    <a class="textlink" href={readme}>{t.status.full} <Fragment set:html={arrow} /></a>
+  </div>
+</section>
+
+<!-- Get started -->
+<section id="start">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="kicker">{t.start.kicker}</span>
+      <h2 class="h2">{t.start.title}</h2>
+    </div>
+    <div class="steps">
+      {
+        t.start.steps.map((s, i) => {
+          const code = s.code.replaceAll("{deck}", deck);
+          return (
+            <article class="step reveal">
+              <div class="step-body">
+                <span class="step-n">{String(i + 1).padStart(2, "0")}</span>
+                <h3>{s.title}</h3>
+                <p>{s.note}</p>
+              </div>
+              <pre class="code"><code>{code}</code><button class="copy" type="button" data-copy={code} data-copied={t.hero.copied}>{t.hero.copy}</button></pre>
+            </article>
+          );
+        })
+      }
+    </div>
+    <div class="start-links">
+      <a class="textlink" href={quickstart}>{t.start.quickstart} <Fragment set:html={arrow} /></a>
+      <a class="textlink" href="https://github.com/openquanter/openquanter/releases">{t.start.releases} <Fragment set:html={arrow} /></a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a class="brand" href={t.lang === "zh" ? "/zh/" : "/"}>OpenQuanter</a>
+        <p class="foot-tag">{t.footer.tagline}</p>
+      </div>
+      {
+        t.footer.cols.map((c) => (
+          <div>
+            <h4>{c.title}</h4>
+            <ul>
+              {c.links.map(([label, href]) => (
+                <li>
+                  <a href={href}>{label}</a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+    <div class="foot-bottom">
+      <p>{t.footer.disclaimer}</p>
+      <span>© {new Date().getFullYear()} OpenQuanter · {t.footer.license}</span>
+    </div>
+  </div>
+</footer>
+
+<script is:inline>
+  (() => {
+    const box = document.querySelector("[data-shots]");
+    if (!box) return;
+    const img = box.querySelector("[data-shot-img]");
+    const cap = box.querySelector("[data-shot-caption]");
+    const url = box.querySelector("[data-shot-url]");
+    const tabs = box.querySelectorAll("[role=tab]");
+    tabs.forEach((b) => {
+      const pre = new Image();
+      b.addEventListener("mouseenter", () => (pre.src = b.dataset.src), { once: true });
+      b.addEventListener("click", () => {
+        tabs.forEach((x) => x.setAttribute("aria-selected", x === b ? "true" : "false"));
+        img.src = b.dataset.src;
+        img.alt = b.dataset.caption;
+        cap.textContent = b.dataset.caption;
+        url.textContent = b.dataset.url;
+      });
+    });
+  })();
+</script>
