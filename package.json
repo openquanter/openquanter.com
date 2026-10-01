@@ -10,7 +10,8 @@
     "deploy": "astro build && npx --yes wrangler@4 deploy"
   },
   "dependencies": {
-    "astro": "^5.18.2"
+    "astro": "^5.18.2",
+    "lucide-static": "^1.48.0"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",

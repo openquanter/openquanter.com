@@ -4,6 +4,11 @@
   "$schema": "https://unpkg.com/wrangler/config-schema.json",
   "name": "openquanter-com",
   "compatibility_date": "2026-09-30",
+  // Both names serve the site; pages declare openquanter.com as canonical.
+  "routes": [
+    { "pattern": "openquanter.com", "custom_domain": true },
+    { "pattern": "www.openquanter.com", "custom_domain": true }
+  ],
   "assets": {
     "directory": "./dist",
     "html_handling": "auto-trailing-slash",

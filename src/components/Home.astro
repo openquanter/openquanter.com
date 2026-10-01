@@ -1,4 +1,5 @@
 ---
+import Icon from "./Icon.astro";
 import type { Copy } from "../i18n/en";
 import { latest } from "../lib/latest";
 
@@ -8,313 +9,368 @@ interface Props {
 const { t } = Astro.props;
 const [oq, deck] = await Promise.all([latest("openquanter/openquanter"), latest("openquanter/quanterdeck")]);
 const versions = [oq, deck];
-const shotDir = t.lang === "zh" ? "zh" : "en";
-const readme =
-  t.lang === "zh"
-    ? "https://github.com/openquanter/openquanter/blob/main/README.zh-CN.md#现状"
-    : "https://github.com/openquanter/openquanter#status";
-const quickstart =
-  t.lang === "zh"
-    ? "https://github.com/openquanter/openquanter/blob/main/docs/QUICKSTART.zh-CN.md"
-    : "https://github.com/openquanter/openquanter/blob/main/docs/QUICKSTART.md";
-const arrow = `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg>`;
+const shots = t.lang === "zh" ? "zh" : "en";
+const zh = t.lang === "zh";
+const badge = t.hero.badge.replace("{oq}", `v${oq}`).replace("{deck}", `v${deck}`);
+const readme = zh
+  ? "https://github.com/openquanter/openquanter/blob/main/README.zh-CN.md"
+  : "https://github.com/openquanter/openquanter#status";
+const quickstart = zh
+  ? "https://github.com/openquanter/openquanter/blob/main/docs/QUICKSTART.zh-CN.md"
+  : "https://github.com/openquanter/openquanter/blob/main/docs/QUICKSTART.md";
+
+const statIcons = [
+  ["Zap", "c-blue"],
+  ["Package", "c-green"],
+  ["Radio", "c-purple"],
+  ["Split", "c-orange"],
+] as const;
+const problemIcons = [
+  ["ShieldAlert", "c-red"],
+  ["SearchX", "c-orange"],
+  ["GitFork", "c-yellow"],
+  ["Snail", "c-teal"],
+  ["CalendarX2", "c-purple"],
+  ["Dices", "c-pink"],
+] as const;
+const flowIcons = [
+  ["Landmark", "c-blue"],
+  ["HardDriveDownload", "c-teal"],
+  ["BookMarked", "c-green"],
+  ["Cpu", "c-yellow"],
+  ["ArrowLeftRight", "c-orange"],
+  ["Scale", "c-red"],
+  ["ChartPie", "c-purple"],
+] as const;
+const pointIcons = [
+  ["KeyRound", "c-green"],
+  ["LockKeyhole", "c-blue"],
+  ["ShieldCheck", "c-purple"],
+  ["History", "c-orange"],
+] as const;
+const audienceIcons = [
+  ["TrendingUp", "c-blue"],
+  ["Workflow", "c-teal"],
+  ["Users", "c-purple"],
+] as const;
+const f = t.features;
+const gh = `<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.42-2.7 5.39-5.26 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5Z"/></svg>`;
 ---
 
-<!-- Hero: the claim, and the receipt for it -->
-<section class="hero">
-  <div class="wrap hero-grid">
-    <div>
-      <div class="eyebrow">{t.hero.eyebrow}</div>
-      <h1>{t.hero.title}</h1>
-      <p class="motto">{t.hero.motto}</p>
-      <p class="lede">{t.hero.lede}</p>
-      <div class="cta">
-        <a class="btn btn-ink" href="#start">{t.hero.primary} <Fragment set:html={arrow} /></a>
-        <a class="btn btn-ghost" href="https://github.com/openquanter/openquanter">{t.hero.secondary}</a>
+<!-- ============ hero ============ -->
+<section class="hero" style="padding-bottom:0">
+  <div class="wrap">
+    <div class="hero-copy">
+      <a class="badge" href="https://github.com/openquanter/openquanter/releases">
+        <b>{zh ? "新" : "New"}</b>{badge}<Icon name="ArrowRight" size={15} />
+      </a>
+      <h1>{t.hero.title1}{zh ? "" : " "}<span>{t.hero.title2}</span></h1>
+      <p class="hero-sub">{t.hero.sub}</p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="#start">{t.hero.primary}<Icon name="ArrowRight" size={18} /></a>
+        <a class="btn btn-secondary" href="https://github.com/openquanter/openquanter"><Fragment set:html={gh} />{t.hero.secondary}</a>
       </div>
       <div class="install">
         <span><b>$</b> pip install openquanter</span>
-        <button class="copy" type="button" data-copy="pip install openquanter" data-copied={t.hero.copied}>{t.hero.copy}</button>
+        <button class="copy" type="button" data-copy="pip install openquanter" data-copied={t.hero.copied}>
+          <Icon name="Copy" size={13} /><span>{t.hero.copy}</span>
+        </button>
       </div>
     </div>
 
-    <figure class="ledger" aria-label={t.ledger.caption}>
-      <div class="ledger-head">
-        <span>{t.ledger.caption}</span>
-        <span>USDT</span>
+    <div class="stage">
+      <div class="browser">
+        <div class="browser-bar"><i></i><i></i><i></i><span>quanterdeck</span></div>
+        <img src={`/shots/${shots}/overview.png`} alt="Quanterdeck" width="1440" height="900" fetchpriority="high" />
       </div>
-      <table>
-        <thead>
-          <tr>
-            <th scope="col"></th>
-            <th scope="col">{t.ledger.colEnforced}</th>
-            <th scope="col">{t.ledger.colFree}</th>
-          </tr>
-        </thead>
-        <tbody>
-          {
-            t.ledger.rows.map(([label, a, b]) => (
-              <tr>
-                <td>{label}</td>
-                <td>{a}</td>
-                <td class={b.startsWith("−") ? "free neg" : "free"}>{b}</td>
-              </tr>
-            ))
-          }
-        </tbody>
-      </table>
-      <div class="ledger-total">
-        <div>
-          <span>{t.ledger.overstated}</span>
-          <strong>{t.ledger.overstatedValue}</strong>
-        </div>
-        <div class="stamp" aria-hidden="true">{t.ledger.stamp}</div>
+
+      <div class="float float-ledger">
+        <div class="float-title"><Icon name="Scale" size={16} />{t.ledger.title}</div>
+        <div class="lrow"><small>{t.ledger.free}</small><span class="v strike">20,908.11</span></div>
+        <div class="lrow"><small>{t.ledger.enforced}</small><span class="v real">61.53</span></div>
+        <div class="lfoot"><code>$ {t.ledger.foot}</code><span class="stamp">{t.ledger.stamp}</span></div>
       </div>
-      <figcaption class="ledger-note">
-        <code class="mono">$ {t.ledger.command}</code><br />
-        {t.ledger.note}
-      </figcaption>
-    </figure>
+
+      <div class="float float-gap">
+        <div class="float-title"><Icon name="ChartPie" size={16} />{t.gap.title}</div>
+        <div class="gapbar" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        <div class="legend">{t.gap.parts.map((p) => <span><i></i>{p}</span>)}</div>
+      </div>
+    </div>
   </div>
 
-  <div class="wrap">
-    <div class="proof reveal" style="margin-top: clamp(56px, 8vw, 96px)">
-      {
-        t.proof.map((p) => (
-          <div>
-            <div>
-              <span class="num">{p.value}</span>
-              <span class="unit">{p.unit}</span>
-            </div>
-            <p>{p.label}</p>
-            <small>{p.foot}</small>
-          </div>
-        ))
-      }
+  <div class="strip">
+    <p>{t.strip}</p>
+    <div class="venues wrap">
+      <span>Binance</span><span>OKX</span><span>Aster</span><span>Kraken</span><span>Hyperliquid</span><span>Backpack</span><span>Bitget</span><span>Deribit</span>
     </div>
   </div>
 </section>
 
-<!-- Why: the six walls -->
+<!-- ============ stats ============ -->
+<section style="padding-top:72px;padding-bottom:0">
+  <div class="wrap stats">
+    {
+      t.stats.map((s, i) => (
+        <div class="card stat reveal">
+          <span class={`ic ${statIcons[i][1]}`}><Icon name={statIcons[i][0]} /></span>
+          <div class="v">{s.value}</div>
+          <p>{s.label}</p>
+        </div>
+      ))
+    }
+  </div>
+</section>
+
+<!-- ============ problem ============ -->
 <section id="why">
   <div class="wrap">
-    <div class="reveal">
-      <span class="kicker">{t.wall.kicker}</span>
-      <h2 class="h2">{t.wall.title}</h2>
-      <p class="lede">{t.wall.lede}</p>
+    <div class="head reveal">
+      <span class="kicker">{t.problem.kicker}</span>
+      <h2 class="h2">{t.problem.title}</h2>
+      <p class="sub">{t.problem.sub}</p>
     </div>
-    <div class="walls">
+    <div class="grid3">
       {
-        t.wall.items.map((w) => (
-          <article class="wall reveal">
-            <h3>{w.title}</h3>
-            <p>{w.body}</p>
-          </article>
+        t.problem.items.map((p, i) => (
+          <div class="card tile reveal">
+            <span class={`ic ${problemIcons[i][1]}`}><Icon name={problemIcons[i][0]} /></span>
+            <h3>{p.title}</h3>
+            <p>{p.body}</p>
+          </div>
         ))
       }
     </div>
   </div>
 </section>
 
-<!-- Who it is for -->
-<section id="who">
+<!-- ============ product ============ -->
+<section id="product" class="product-section">
   <div class="wrap">
-    <div class="reveal">
-      <span class="kicker">{t.audience.kicker}</span>
-      <h2 class="h2">{t.audience.title}</h2>
+    <div class="head reveal">
+      <span class="kicker">{t.product.kicker}</span>
+      <h2 class="h2">{t.product.title}</h2>
+      <p class="sub">{t.product.sub}</p>
     </div>
-    <div class="aud">
-      <div class="aud-for reveal">
-        <h3>{t.audience.forTitle}</h3>
+
+    <div class="arch reveal">
+      <div class="arch-deck"><Icon name="PanelsTopLeft" size={20} />{t.product.deckLayer}</div>
+      <div class="arch-arrow"><Icon name="ArrowDown" size={18} /></div>
+      <div class="flow">
         {
-          t.audience.for.map((a) => (
-            <article>
-              <h4>{a.title}</h4>
-              <p>{a.body}</p>
-            </article>
+          t.product.flow.map((n, i) => (
+            <div class="node">
+              <span class={`ic ${flowIcons[i][1]}`}><Icon name={flowIcons[i][0]} /></span>
+              {n}
+            </div>
           ))
         }
       </div>
-      <aside class="aud-not reveal">
-        <h3>{t.audience.notTitle}</h3>
-        <ul>{t.audience.not.map((n) => <li>{n}</li>)}</ul>
-      </aside>
+      <p class="flow-note">{t.product.flowNote}</p>
+    </div>
+
+    <div class="pcards">
+      {
+        t.product.cards.map((c, i) => (
+          <a class="card pcard reveal" href={c.link}>
+            <div class="pcard-top">
+              <span class={`ic ${i === 0 ? "c-blue" : "c-purple"}`}>
+                <Icon name={i === 0 ? "Boxes" : "PanelsTopLeft"} />
+              </span>
+              <div>
+                <h3>{c.name}</h3>
+                <div class="role">{c.role}</div>
+              </div>
+              <span class="ver">v{versions[i]}</span>
+            </div>
+            <p>{c.body}</p>
+            <div class="chips">{c.chips.map((x) => <span>{x}</span>)}</div>
+            <span class="more">{c.cta}<Icon name="ArrowRight" size={16} /></span>
+          </a>
+        ))
+      }
     </div>
   </div>
 </section>
 
-<!-- How it fits together -->
-<section id="stack">
-  <div class="wrap">
-    <div class="reveal">
-      <span class="kicker">{t.stack.kicker}</span>
-      <h2 class="h2">{t.stack.title}</h2>
-      <p class="lede">{t.stack.lede}</p>
-    </div>
-    <div class="stack-grid">
-      <div class="diagram reveal">
-        <div class="layer layer-deck">
-          <div class="layer-title">{t.stack.layers.deck}</div>
-          <div class="pills">{t.stack.layers.deckItems.map((d) => <span>{d}</span>)}</div>
-        </div>
-        <div class="reads">reads ↑</div>
-        <div class="layer">
-          <div class="layer-title">{t.stack.layers.engine}</div>
-          <ol class="flow">
-            {
-              t.stack.layers.flow.map(([name, what]) => (
-                <li>
-                  <b>{name}</b>
-                  <span>{what}</span>
-                </li>
-              ))
-            }
-          </ol>
-          <div class="layer-foot">
-            <span>{t.stack.layers.lang}</span>
-          </div>
-        </div>
-        <div class="reads">↕</div>
-        <div class="layer">
-          <div class="layer-title">{t.stack.layers.venues}</div>
-          <div class="pills">
-            <span>Binance</span><span>OKX</span><span>Aster</span><span>Kraken</span><span>Hyperliquid</span><span>Backpack</span><span>Bitget</span><span>Deribit</span>
-          </div>
-          <div class="layer-foot"><span>{t.stack.layers.venuesNote}</span></div>
-        </div>
-      </div>
-
-      <div class="products">
-        {
-          t.stack.products.map((p, i) => (
-            <a class="product reveal" href={p.link}>
-              <div class="product-top">
-                <h3>{p.name}</h3>
-                <span class="role">{p.role}</span>
-              </div>
-              <p>{p.body}</p>
-              <div class="facts">
-                <span class="ver">
-                  {t.stack.latest} v{versions[i]}
-                </span>
-                {p.facts.map((f) => <span>{f}</span>)}
-              </div>
-            </a>
-          ))
-        }
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Engine features -->
+<!-- ============ engine bento ============ -->
 <section id="engine">
   <div class="wrap">
-    <div class="reveal">
-      <span class="kicker">{t.features.kicker}</span>
-      <h2 class="h2">{t.features.title}</h2>
+    <div class="head reveal">
+      <span class="kicker">{f.kicker}</span>
+      <h2 class="h2">{f.title}</h2>
     </div>
-    <div class="features">
-      {
-        t.features.items.map((f, i) => (
-          <article class="feature reveal">
-            <span class="feature-idx">{String(i + 1).padStart(2, "0")}</span>
-            <h3>{f.title}</h3>
-            <p>{f.body}</p>
-          </article>
-        ))
-      }
+    <div class="bento">
+      <div class="card b b-2 reveal">
+        <span class="ic c-red"><Icon name="Scale" /></span>
+        <h3>{f.margin.title}</h3>
+        <p>{f.margin.body}</p>
+        <div class="viz bars">
+          <div class="bar-row"><span>{f.margin.a}</span><div class="track"><div class="fill fill-free"></div></div><b>20,908.11</b></div>
+          <div class="bar-row"><span>{f.margin.b}</span><div class="track"><div class="fill fill-real"></div></div><b class="neg">61.53</b></div>
+        </div>
+      </div>
+
+      <div class="card b b-2 reveal">
+        <span class="ic c-blue"><Icon name="Layers3" /></span>
+        <h3>{f.ladder.title}</h3>
+        <p>{f.ladder.body}</p>
+        <div class="viz ladder">
+          {f.ladder.steps.map(([k, v]) => <div class="rung"><b>{k}</b>{v}</div>)}
+        </div>
+      </div>
+
+      <div class="card b b-2 reveal">
+        <span class="ic c-purple"><Icon name="ChartPie" /></span>
+        <h3>{f.attribution.title}</h3>
+        <p>{f.attribution.body}</p>
+        <div class="viz">
+          <div class="gapbar" style="height:18px;margin-top:0"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          <div class="legend" style="grid-template-columns:repeat(3,1fr)">{t.gap.parts.map((p) => <span><i></i>{p}</span>)}</div>
+        </div>
+      </div>
+
+      <div class="card b reveal">
+        <span class="ic c-pink"><Icon name="Dices" /></span>
+        <h3>{f.overfit.title}</h3>
+        <p>{f.overfit.body}</p>
+        <div class="viz gauges">
+          <div class="gauge"><b>DSR</b><small>deflated Sharpe</small></div>
+          <div class="gauge"><b>PBO</b><small>CSCV</small></div>
+        </div>
+      </div>
+
+      <div class="card b reveal">
+        <span class="ic c-green"><Icon name="BookMarked" /></span>
+        <h3>{f.journal.title}</h3>
+        <p>{f.journal.body}</p>
+        <div class="viz timeline" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      </div>
+
+      <div class="card b reveal">
+        <span class="ic c-teal"><Icon name="Package" /></span>
+        <h3>{f.deps.title}</h3>
+        <p>{f.deps.body}</p>
+        <div class="viz chips">
+          <span>oq-core</span><span>oq-engine</span><span>oq-margin</span><span>oq-stats</span>
+        </div>
+      </div>
+
+      <div class="card b reveal">
+        <span class="ic c-yellow"><Icon name="Code" /></span>
+        <h3>{f.python.title}</h3>
+        <p>{f.python.body}</p>
+        <div class="viz">
+          <pre class="snippet"><span class="k">import</span> openquanter <span class="k">as</span> oq
+oq.<span class="f">run_backtest</span>(MyStrategy(),
+    ticks, balance=<span class="s">10_000</span>)</pre>
+        </div>
+      </div>
+
+      <div class="card b b-2 reveal">
+        <span class="ic c-orange"><Icon name="Split" /></span>
+        <h3>{f.orders.title}</h3>
+        <p>{f.orders.body}</p>
+        <div class="viz outcomes">
+          <span><Icon name="Check" size={14} />{f.orders.chips[0]}</span>
+          <span><Icon name="X" size={14} />{f.orders.chips[1]}</span>
+          <span><Icon name="CircleHelp" size={14} />{f.orders.chips[2]}</span>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
 
-<!-- Quanterdeck -->
-<section id="deck" class="deck-section">
+<!-- ============ quanterdeck ============ -->
+<section id="deck" class="product-section">
   <div class="wrap">
-    <div class="reveal">
+    <div class="head reveal">
       <span class="kicker">{t.deck.kicker}</span>
       <h2 class="h2">{t.deck.title}</h2>
-      <p class="lede">{t.deck.lede}</p>
+      <p class="sub">{t.deck.sub}</p>
     </div>
-
-    <div class="shots reveal" data-shots>
-      <div class="shot-main">
-        <div class="shot-bar"><i></i><i></i><i></i><span data-shot-url>quanterdeck · /</span></div>
-        <img
-          data-shot-img
-          src={`/shots/${shotDir}/${t.deck.shots[0][0]}.png`}
-          alt={t.deck.shots[0][1]}
-          width="1440"
-          height="900"
-          loading="eager"
-          decoding="async"
-        />
-      </div>
-      <div class="shot-tabs" role="tablist">
+    <div data-shots>
+      <div class="tabs" role="tablist">
         {
-          t.deck.shots.map(([key, caption], i) => (
-            <button
-              type="button"
-              role="tab"
-              aria-selected={i === 0 ? "true" : "false"}
-              data-src={`/shots/${shotDir}/${key}.png`}
-              data-caption={caption}
-              data-url={`quanterdeck · /${key === "overview" ? "" : key.replace("-moment", "")}`}
-            >
-              {caption.split(/ — |——/)[0]}
+          t.deck.tabs.map(([key, label], i) => (
+            <button type="button" role="tab" aria-selected={i === 1 ? "true" : "false"} data-src={`/shots/${shots}/${key}.png`} data-alt={label}>
+              {label}
             </button>
           ))
         }
       </div>
-      <p class="shot-caption" data-shot-caption>{t.deck.shots[0][1]}</p>
+      <div class="browser deck-shot">
+        <div class="browser-bar"><i></i><i></i><i></i><span>quanterdeck</span></div>
+        <img data-shot-img src={`/shots/${shots}/live.png`} alt={t.deck.tabs[1][1]} width="1440" height="900" loading="lazy" />
+      </div>
     </div>
-
-    <div class="deck-rules">
-      <div class="reveal">
-        <h3>{t.deck.rulesTitle}</h3>
-        {
-          t.deck.rules.map(([rule, why]) => (
-            <div class="rule-item">
-              <b>{rule}</b>
-              <span>{why}</span>
-            </div>
-          ))
-        }
-      </div>
-      <div class="reveal">
-        <h3>{t.deck.securityTitle}</h3>
-        <ul class="sec-list">{t.deck.security.map((s) => <li>{s}</li>)}</ul>
-      </div>
+    <div class="points">
+      {
+        t.deck.points.map((p, i) => (
+          <div class="card point reveal">
+            <span class={`ic ${pointIcons[i][1]}`}><Icon name={pointIcons[i][0]} /></span>
+            <h3>{p.title}</h3>
+            <p>{p.body}</p>
+          </div>
+        ))
+      }
     </div>
   </div>
 </section>
 
-<!-- Status -->
-<section id="status">
+<!-- ============ audience ============ -->
+<section id="who">
   <div class="wrap">
-    <div class="reveal">
+    <div class="head reveal">
+      <span class="kicker">{t.audience.kicker}</span>
+      <h2 class="h2">{t.audience.title}</h2>
+    </div>
+    <div class="grid3">
+      {
+        t.audience.items.map((a, i) => (
+          <div class="card tile reveal">
+            <span class={`ic ${audienceIcons[i][1]}`}><Icon name={audienceIcons[i][0]} /></span>
+            <h3>{a.title}</h3>
+            <p>{a.body}</p>
+          </div>
+        ))
+      }
+    </div>
+    <div class="not reveal">
+      <em>{t.audience.notTitle}</em>
+      {t.audience.not.map((n) => <span><Icon name="Ban" size={14} />{n}</span>)}
+    </div>
+  </div>
+</section>
+
+<!-- ============ status ============ -->
+<section id="status" class="status-section">
+  <div class="wrap">
+    <div class="head reveal">
       <span class="kicker">{t.status.kicker}</span>
       <h2 class="h2">{t.status.title}</h2>
-      <p class="lede">{t.status.lede}</p>
     </div>
     <div class="status-grid">
-      <div class="status-col reveal">
-        <h3><i></i>{t.status.builtTitle}</h3>
-        <ul>{t.status.built.map((b) => <li>{b}</li>)}</ul>
+      <div class="card scard reveal">
+        <h3><span class="ic c-green" style="width:32px;height:32px;border-radius:9px"><Icon name="CircleCheck" size={18} /></span>{t.status.built}</h3>
+        <ul class="slist">{t.status.builtItems.map((b) => <li><Icon name="Check" class="yes" size={18} />{b}</li>)}</ul>
       </div>
-      <div class="status-col not reveal">
-        <h3><i></i>{t.status.notTitle}</h3>
-        <ul>{t.status.not.map((b) => <li>{b}</li>)}</ul>
+      <div class="card scard next reveal">
+        <h3><span class="ic c-yellow" style="width:32px;height:32px;border-radius:9px"><Icon name="CircleDashed" size={18} /></span>{t.status.next}</h3>
+        <ul class="slist">{t.status.nextItems.map((b) => <li><Icon name="CircleDashed" class="no" size={18} />{b}</li>)}</ul>
       </div>
     </div>
-    <a class="textlink" href={readme}>{t.status.full} <Fragment set:html={arrow} /></a>
+    <div class="center">
+      <a class="more" href={readme}>{t.status.more}<Icon name="ArrowRight" size={16} /></a>
+    </div>
   </div>
 </section>
 
-<!-- Get started -->
+<!-- ============ start ============ -->
 <section id="start">
   <div class="wrap">
-    <div class="reveal">
+    <div class="head reveal">
       <span class="kicker">{t.start.kicker}</span>
       <h2 class="h2">{t.start.title}</h2>
     </div>
@@ -323,50 +379,43 @@ const arrow = `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke
         t.start.steps.map((s, i) => {
           const code = s.code.replaceAll("{deck}", deck);
           return (
-            <article class="step reveal">
-              <div class="step-body">
-                <span class="step-n">{String(i + 1).padStart(2, "0")}</span>
-                <h3>{s.title}</h3>
-                <p>{s.note}</p>
+            <div class="card step reveal">
+              <div class="step-top">
+                <span class="step-n">{i + 1}</span>
+                {s.title}
               </div>
-              <pre class="code"><code>{code}</code><button class="copy" type="button" data-copy={code} data-copied={t.hero.copied}>{t.hero.copy}</button></pre>
-            </article>
+              <pre class="term">{code}<button class="copy" type="button" data-copy={code} data-copied={t.hero.copied}><Icon name="Copy" size={13} /><span>{t.hero.copy}</span></button></pre>
+            </div>
           );
         })
       }
     </div>
-    <div class="start-links">
-      <a class="textlink" href={quickstart}>{t.start.quickstart} <Fragment set:html={arrow} /></a>
-      <a class="textlink" href="https://github.com/openquanter/openquanter/releases">{t.start.releases} <Fragment set:html={arrow} /></a>
+    <div class="links">
+      <a class="btn btn-primary" href={quickstart}><Icon name="BookOpen" size={18} />{t.start.quickstart}</a>
+      <a class="btn btn-secondary" href="https://github.com/openquanter/quanterdeck/releases"><Icon name="Download" size={18} />{t.start.releases}</a>
     </div>
   </div>
 </section>
 
 <footer>
   <div class="wrap">
-    <div class="foot-grid">
+    <div class="foot">
       <div>
-        <a class="brand" href={t.lang === "zh" ? "/zh/" : "/"}>OpenQuanter</a>
-        <p class="foot-tag">{t.footer.tagline}</p>
+        <a class="brand" href={zh ? "/zh/" : "/"}><span class="dots" aria-hidden="true"><i></i><i></i><i></i><i></i></span>OpenQuanter</a>
+        <p>{t.footer.tagline}</p>
       </div>
       {
         t.footer.cols.map((c) => (
           <div>
             <h4>{c.title}</h4>
-            <ul>
-              {c.links.map(([label, href]) => (
-                <li>
-                  <a href={href}>{label}</a>
-                </li>
-              ))}
-            </ul>
+            <ul>{c.links.map(([label, href]) => <li><a href={href}>{label}</a></li>)}</ul>
           </div>
         ))
       }
     </div>
-    <div class="foot-bottom">
-      <p>{t.footer.disclaimer}</p>
-      <span>© {new Date().getFullYear()} OpenQuanter · {t.footer.license}</span>
+    <div class="legal">
+      <span>{t.footer.disclaimer}</span>
+      <span>© {new Date().getFullYear()} OpenQuanter · Apache-2.0</span>
     </div>
   </div>
 </footer>
@@ -376,18 +425,13 @@ const arrow = `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke
     const box = document.querySelector("[data-shots]");
     if (!box) return;
     const img = box.querySelector("[data-shot-img]");
-    const cap = box.querySelector("[data-shot-caption]");
-    const url = box.querySelector("[data-shot-url]");
     const tabs = box.querySelectorAll("[role=tab]");
     tabs.forEach((b) => {
-      const pre = new Image();
-      b.addEventListener("mouseenter", () => (pre.src = b.dataset.src), { once: true });
+      b.addEventListener("mouseenter", () => { new Image().src = b.dataset.src; }, { once: true });
       b.addEventListener("click", () => {
         tabs.forEach((x) => x.setAttribute("aria-selected", x === b ? "true" : "false"));
         img.src = b.dataset.src;
-        img.alt = b.dataset.caption;
-        cap.textContent = b.dataset.caption;
-        url.textContent = b.dataset.url;
+        img.alt = b.dataset.alt;
       });
     });
   })();

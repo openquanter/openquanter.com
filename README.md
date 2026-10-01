@@ -16,8 +16,8 @@ npm run build      # dist/
 npx astro check
 ```
 
-Deployed to Cloudflare as static assets (Worker `openquanter-com`, no
-Worker code; see `wrangler.jsonc`):
+Served by Cloudflare at openquanter.com and www.openquanter.com as static
+assets (Worker `openquanter-com`, no Worker code; see `wrangler.jsonc`):
 
 ```bash
 npm run deploy     # astro build && wrangler deploy
