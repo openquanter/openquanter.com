@@ -25,3 +25,8 @@ npm run deploy     # astro build && wrangler deploy
 
 Every number on the page has a source in one of the two repositories:
 change it there first.
+
+## License
+
+Apache-2.0, the same as [OpenQuanter](https://github.com/openquanter/openquanter)
+and [Quanterdeck](https://github.com/openquanter/quanterdeck). See [LICENSE](LICENSE).
