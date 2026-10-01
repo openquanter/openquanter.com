@@ -92,7 +92,7 @@ const gh = `<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><pat
       </div>
 
       <div class="float float-gap">
-        <div class="float-title"><Icon name="ChartPie" size={16} />{t.gap.title}</div>
+        <div class="float-title"><Icon name="ChartPie" size={16} />{t.gap.title}<em class="note">{t.gap.note}</em></div>
         <div class="gapbar" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
         <div class="legend">{t.gap.parts.map((p) => <span><i></i>{p}</span>)}</div>
       </div>
@@ -227,6 +227,7 @@ const gh = `<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><pat
         <div class="viz">
           <div class="gapbar" style="height:18px;margin-top:0"><i></i><i></i><i></i><i></i><i></i><i></i></div>
           <div class="legend" style="grid-template-columns:repeat(3,1fr)">{t.gap.parts.map((p) => <span><i></i>{p}</span>)}</div>
+          <div class="note" style="margin-top:10px">{t.gap.note}</div>
         </div>
       </div>
 
@@ -384,6 +385,7 @@ oq.<span class="f">run_backtest</span>(MyStrategy(),
                 <span class="step-n">{i + 1}</span>
                 {s.title}
               </div>
+              <p class="step-note">{s.note}</p>
               <pre class="term">{code}<button class="copy" type="button" data-copy={code} data-copied={t.hero.copied}><Icon name="Copy" size={13} /><span>{t.hero.copy}</span></button></pre>
             </div>
           );
@@ -393,6 +395,7 @@ oq.<span class="f">run_backtest</span>(MyStrategy(),
     <div class="links">
       <a class="btn btn-primary" href={quickstart}><Icon name="BookOpen" size={18} />{t.start.quickstart}</a>
       <a class="btn btn-secondary" href="https://github.com/openquanter/quanterdeck/releases"><Icon name="Download" size={18} />{t.start.releases}</a>
+      <a class="btn btn-secondary" href={zh ? "https://github.com/openquanter/quanterdeck/blob/main/README.zh-CN.md#发布" : "https://github.com/openquanter/quanterdeck#releases"}><Icon name="PanelsTopLeft" size={18} />{t.start.deckSetup}</a>
     </div>
   </div>
 </section>

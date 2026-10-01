@@ -23,7 +23,7 @@ export const zh: Copy = {
     badge: "OpenQuanter {oq} 与 Quanterdeck {deck} 已发布",
     title1: "回测与实盘之间的每一分钱，",
     title2: "都对得上。",
-    sub: "一个 Rust 交易引擎：真实交易所会强平时它就强平，回测与实盘跑在同一个内核上，并把二者的差额讲清楚——上面再配一个自托管控制台。",
+    sub: "一个 Rust 交易引擎：真实交易所会强平时它就强平，回测与实盘跑在同一个内核上，并为讲清二者之间的差额而建——上面再配一个自托管控制台。",
     primary: "开始上手",
     secondary: "GitHub",
     copy: "复制",
@@ -39,11 +39,12 @@ export const zh: Copy = {
   },
   gap: {
     title: "实盘 − 回测，拆开来看",
+    note: "示意",
     parts: ["滑点", "排队", "资金费", "延迟", "费率档", "残差"],
   },
   strip: "下单路径已接入八家交易所",
   stats: [
-    { value: "3500 万", label: "每秒 tick，含保证金与策略" },
+    { value: "3500 万", label: "每秒 tick，含保证金与策略（M4 Mac，内存中）" },
     { value: "0", label: "引擎中的第三方依赖" },
     { value: "+20,467", label: "某商业存档丢失、我们保住的成交" },
     { value: "3", label: "种下单结果：接受、拒绝、未知" },
@@ -51,7 +52,7 @@ export const zh: Copy = {
   problem: {
     kicker: "要解决的问题",
     title: "最危险的错误，是看起来正确的那一个。",
-    sub: "多年实盘撞上了六面墙，没有一面报过错。",
+    sub: "它的前身用真钱交易了多年，撞上了六面墙，没有一面报过错。",
     items: [
       { title: "静默失败", body: "零价成交、无尽的撤单循环。没有崩溃。" },
       { title: "差额说不清", body: "实盘和回测不一样，却说不出差在哪。" },
@@ -65,7 +66,7 @@ export const zh: Copy = {
     kicker: "产品",
     title: "两层结构，一本真账。",
     sub: "引擎负责产出证据，控制台负责让证据看得懂。",
-    deckLayer: "Quanterdeck 读取下面的一切——而不改变任何东西",
+    deckLayer: "Quanterdeck 读取下面的一切——读取永远不改变它",
     flow: ["交易所", "采集", "Journal", "内核", "撮合", "保证金", "归因"],
     flowNote: "回测与实盘共用一个确定性内核",
     cards: [
@@ -80,8 +81,8 @@ export const zh: Copy = {
       {
         name: "Quanterdeck",
         role: "控制台",
-        body: "自托管的 Web 控制台：回测记录、对账、归因，以及交易主机本身。",
-        chips: ["自托管", "密钥不出本机", "签名发布"],
+        body: "自托管的 Web 控制台：回测与参数扫描、实盘对账与归因，以及运维交易主机——部署、回滚、停机、告警。",
+        chips: ["自托管", "密钥不出本机", "签名部署", "告警", "新版本检测"],
         link: "https://github.com/openquanter/quanterdeck",
         cta: "了解控制台",
       },
@@ -176,25 +177,28 @@ export const zh: Copy = {
       "测试网实盘闭环 + 控制台",
     ],
     next: "尚未完成",
-    nextItems: ["供归因的长时间实盘", "API 稳定", "ONNX 推理", "crates.io 发布"],
+    nextItems: ["供归因的长时间实盘", "API 稳定", "2.x 用真钱实盘交易", "ONNX 推理、LLM 沙箱", "crates.io 发布"],
     more: "完整现状",
   },
   start: {
     kicker: "上手",
     title: "几分钟跑起来。",
     steps: [
-      { title: "安装 Python 包", code: "pip install openquanter" },
+      { title: "安装 Python 包", note: "Deflated Sharpe、过拟合概率，以及在 Rust 引擎上运行的 Python 策略。支持 Linux、macOS、Windows。", code: "pip install openquanter" },
       {
-        title: "运行本页顶部那个示例",
+        title: "运行本页顶部那个示例（需要 Rust）",
+        note: "快速上手里有三个示例，不需要下载数据。",
         code: "git clone https://github.com/openquanter/openquanter\ncd openquanter\ncargo run --example martingale_ladder",
       },
       {
         title: "下载 Linux 版 Quanterdeck",
+        note: "控制台、主机代理与 Web 界面，附校验和。",
         code: "v={deck}; t=x86_64-unknown-linux-gnu\ncurl -LO https://github.com/openquanter/quanterdeck/releases/download/v$v/quanterdeck-v$v-$t.tar.gz{,.sha256}\nsha256sum -c quanterdeck-v$v-$t.tar.gz.sha256",
       },
     ],
     quickstart: "快速上手指南",
     releases: "全部发布",
+    deckSetup: "配置 Quanterdeck",
   },
   footer: {
     tagline: "回测与实盘之间的每一分钱，都对得上。",

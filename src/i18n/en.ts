@@ -22,7 +22,7 @@ export const en = {
     badge: "OpenQuanter {oq} and Quanterdeck {deck} are out",
     title1: "Every cent between backtest and live,",
     title2: "accounted for.",
-    sub: "A Rust trading engine that liquidates when a real venue would, runs backtest and live on one core, and explains the gap — with a self-hosted console on top.",
+    sub: "A Rust trading engine that liquidates when a real venue would, runs backtest and live on one core, and is built to explain the gap between them — with a self-hosted console on top.",
     primary: "Get started",
     secondary: "GitHub",
     copy: "Copy",
@@ -38,11 +38,12 @@ export const en = {
   },
   gap: {
     title: "Live − backtest, decomposed",
+    note: "illustrative",
     parts: ["Slippage", "Queue", "Funding", "Latency", "Fee tier", "Residual"],
   },
   strip: "Eight venues on the order path",
   stats: [
-    { value: "35M", label: "ticks per second, with margin and a strategy" },
+    { value: "35M", label: "ticks per second with margin and a strategy (M4 Mac, in memory)" },
     { value: "0", label: "third-party dependencies in the engine" },
     { value: "+20,467", label: "trades kept that a commercial archive lost" },
     { value: "3", label: "order outcomes: accepted, rejected, unknown" },
@@ -50,7 +51,7 @@ export const en = {
   problem: {
     kicker: "The problem",
     title: "The dangerous error is the one that looks right.",
-    sub: "Built after years of live trading hit six walls. None of them raised an error.",
+    sub: "Its predecessor traded real money for years and hit six walls. None of them raised an error.",
     items: [
       { title: "Silent failure", body: "Zero-price fills, endless cancel loops. Nothing crashed." },
       { title: "Unexplained gap", body: "Live differs from backtest, and nobody can say where." },
@@ -64,7 +65,7 @@ export const en = {
     kicker: "The product",
     title: "Two layers. One account of the truth.",
     sub: "The engine produces evidence. The console makes it legible.",
-    deckLayer: "Quanterdeck reads everything below — and changes nothing",
+    deckLayer: "Quanterdeck reads everything below — and reading never changes it",
     flow: ["Venues", "Capture", "Journal", "Core", "Matching", "Margin", "Attribution"],
     flowNote: "One deterministic core for backtest and live",
     cards: [
@@ -79,8 +80,8 @@ export const en = {
       {
         name: "Quanterdeck",
         role: "Console",
-        body: "A self-hosted web console for runs, reconciliation, attribution and the trading host.",
-        chips: ["self-hosted", "keys stay local", "signed releases"],
+        body: "A self-hosted web console: backtests and sweeps, live reconciliation and attribution, and running the trading host — deploy, roll back, halt, alerts.",
+        chips: ["self-hosted", "keys stay local", "signed deploys", "alerts", "release check"],
         link: "https://github.com/openquanter/quanterdeck",
         cta: "Explore the console",
       },
@@ -178,7 +179,8 @@ export const en = {
     nextItems: [
       "Long live runs for attribution",
       "API stability",
-      "ONNX inference",
+      "Trading real money on 2.x",
+      "ONNX inference, LLM sandbox",
       "Crates on crates.io",
     ],
     more: "Full status",
@@ -187,18 +189,21 @@ export const en = {
     kicker: "Get started",
     title: "Running in minutes.",
     steps: [
-      { title: "Install the Python package", code: "pip install openquanter" },
+      { title: "Install the Python package", note: "Deflated Sharpe, overfitting probability, and Python strategies on the Rust engine. Linux, macOS, Windows.", code: "pip install openquanter" },
       {
-        title: "Run the example from the top of this page",
+        title: "Run the example from the top of this page (needs Rust)",
+        note: "Three examples in the Quickstart, no data to download.",
         code: "git clone https://github.com/openquanter/openquanter\ncd openquanter\ncargo run --example martingale_ladder",
       },
       {
         title: "Download Quanterdeck for Linux",
+        note: "The console, the host agent and the web interface, with a checksum.",
         code: "v={deck}; t=x86_64-unknown-linux-gnu\ncurl -LO https://github.com/openquanter/quanterdeck/releases/download/v$v/quanterdeck-v$v-$t.tar.gz{,.sha256}\nsha256sum -c quanterdeck-v$v-$t.tar.gz.sha256",
       },
     ],
     quickstart: "Quickstart guide",
     releases: "All releases",
+    deckSetup: "Set up Quanterdeck",
   },
   footer: {
     tagline: "Every cent between backtest and live, accounted for.",
@@ -217,7 +222,7 @@ export const en = {
         title: "Quanterdeck",
         links: [
           ["GitHub", "https://github.com/openquanter/quanterdeck"],
-          ["Security", "https://github.com/openquanter/quanterdeck/blob/main/docs/SECURITY.zh-CN.md"],
+          ["Security model (Chinese)", "https://github.com/openquanter/quanterdeck/blob/main/docs/SECURITY.zh-CN.md"],
           ["Releases", "https://github.com/openquanter/quanterdeck/releases"],
         ],
       },
