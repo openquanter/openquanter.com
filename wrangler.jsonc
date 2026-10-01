@@ -1,0 +1,12 @@
+{
+  // Static assets only: no Worker code runs. Cloudflare serves dist/ as
+  // built by `astro build`.
+  "$schema": "https://unpkg.com/wrangler/config-schema.json",
+  "name": "openquanter-com",
+  "compatibility_date": "2026-09-30",
+  "assets": {
+    "directory": "./dist",
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "404-page"
+  }
+}

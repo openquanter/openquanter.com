@@ -16,10 +16,11 @@ npm run build      # dist/
 npx astro check
 ```
 
-Deployed to Cloudflare Pages (project `openquanter-com`):
+Deployed to Cloudflare as static assets (Worker `openquanter-com`, no
+Worker code; see `wrangler.jsonc`):
 
 ```bash
-npm run build && npx wrangler pages deploy dist --project-name openquanter-com --branch main
+npm run deploy     # astro build && wrangler deploy
 ```
 
 Every number on the page has a source in one of the two repositories:
